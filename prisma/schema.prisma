@@ -15,6 +15,7 @@ model User {
   email     String   @unique
   name      String?
   password  String
+  role      Role
 }
 
 model Client {
@@ -78,4 +79,9 @@ model SimulationHistory {
   results       Json
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+}
+
+enum Role {
+  ADVISOR
+  VIEWER
 }
