@@ -1,6 +1,7 @@
 import Fastify from "fastify";
 import { PrismaClient } from "@prisma/client";
 import clientRoutes from "./routes/clients.js"; // <<< Aqui ele é importado
+import { authRoutes } from './routes/auth.js';
 
 const app = Fastify({
   logger: true,
@@ -10,6 +11,7 @@ const prisma = new PrismaClient();
 
 // <<< E aqui ele é registrado para que as rotas funcionem
 app.register(clientRoutes, { prisma });
+app.register(authRoutes);
 
 app.get("/", async (request, reply) => {
   return { hello: "world" };
