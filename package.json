@@ -1,0 +1,28 @@
+{
+  "name": "multi-family-office",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "ts-node src/server.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "description": "",
+  "dependencies": {
+    "@fastify/multipart": "^9.0.3",
+    "@prisma/client": "^6.13.0",
+    "csv-parser": "^3.2.0",
+    "fastify": "^5.4.0",
+    "zod": "^4.0.15"
+  },
+  "devDependencies": {
+    "@types/node": "^24.2.0",
+    "prisma": "^6.13.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  }
+}
