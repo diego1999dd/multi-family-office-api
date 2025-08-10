@@ -1,5 +1,5 @@
 
-export function simulateWealthCurve(initialState: { initialWealth: number; monthlyContribution: number; monthlyGrowthRate: number; projectionMonths: number; }) {
+module.exports.simulateWealthCurve = function simulateWealthCurve(initialState: { initialWealth: number; monthlyContribution: number; monthlyGrowthRate: number; projectionMonths: number; }) {
   const wealthCurve: number[] = [];
   let currentWealth = initialState.initialWealth;
 

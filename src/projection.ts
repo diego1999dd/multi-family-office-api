@@ -9,7 +9,7 @@ interface State {
   date: Date;
 }
 
-export function simulateWealthCurve(initialState: State, events: Event[], rate: number) {
+module.exports.simulateWealthCurve = function simulateWealthCurve(initialState: State, events: Event[], rate: number) {
   const monthlyRate = rate / 12;
   const projections: { year: number; projectedValue: number }[] = [];
   let currentValue = initialState.initialValue;

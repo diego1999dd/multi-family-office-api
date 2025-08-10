@@ -1,14 +1,15 @@
 
-import { FastifyInstance } from 'fastify';
-import { z } from 'zod';
-import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import type { FastifyRequest, FastifyReply } from 'fastify';
+const { FastifyInstance } = require('fastify');
+const { z } = require('zod');
+const { PrismaClient } = require('@prisma/client');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const prisma = new PrismaClient();
 
-export async function authRoutes(server: FastifyInstance) {
-  server.post('/auth/register', async (request, reply) => {
+export async function authRoutes(server: typeof FastifyInstance) {
+  server.post('/auth/register', async (request: FastifyRequest, reply: FastifyReply) => {
     const registerBodySchema = z.object({
       name: z.string(),
       email: z.string().email(),
@@ -44,7 +45,7 @@ export async function authRoutes(server: FastifyInstance) {
     }
   });
 
-  server.post('/auth/login', async (request, reply) => {
+  server.post('/auth/login', async (request: FastifyRequest, reply: FastifyReply) => {
     const loginBodySchema = z.object({
       email: z.string().email(),
       password: z.string(),

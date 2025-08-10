@@ -11,7 +11,7 @@ export interface ProjectionPoint {
   projectedValue: number;
 }
 
-export function simulateWealthCurve(
+module.exports.simulateWealthCurve = function simulateWealthCurve(
   initialValue: number,
   events: Event[],
   monthlyRate: number

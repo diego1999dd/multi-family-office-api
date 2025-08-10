@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
 
@@ -25,7 +25,7 @@ export interface Suggestion {
   details?: any;
 }
 
-export async function generateSuggestions(clientData: ClientDataForSuggestions): Promise<Suggestion[]> {
+module.exports.generateSuggestions = async function generateSuggestions(clientData: ClientDataForSuggestions): Promise<Suggestion[]> {
   const suggestions: Suggestion[] = [];
 
   const totalInPlan = clientData.goals.reduce((acc, goal) => acc + goal.targetValue, 0);

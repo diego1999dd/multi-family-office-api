@@ -1,17 +1,14 @@
 import type { FastifyInstance } from "fastify";
-import { PrismaClient, type Goals } from "@prisma/client";
-import { z } from "zod";
-import fastifyMultipart from "@fastify/multipart";
-import csv from "csv-parser";
-import {
-  generateSuggestions,
-  type ClientDataForSuggestions,
-} from "../suggestion-service.js";
+const { PrismaClient, Goals } = require("@prisma/client");
+const { z } = require("zod");
+const fastifyMultipart = require("@fastify/multipart");
+const csv = require("csv-parser");
+  const { generateSuggestions } = require("../suggestion-service.ts");
 
 // A função de plugin, que recebe a instância do Fastify e o objeto de opções (prisma)
 export default async function clientRoutes(
   app: FastifyInstance,
-  options: { prisma: PrismaClient }
+  options: { prisma: typeof PrismaClient }
 ) {
   const prisma = options.prisma;
 
