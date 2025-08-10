@@ -24,6 +24,9 @@ model Client {
   email  String @unique
   age    Int
   status String
+  phone  String?
+  address String?
+  birthDate DateTime?
   totalPatrimony Float?
   goals  Goals[]
   wallet Wallet?

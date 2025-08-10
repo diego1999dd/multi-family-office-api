@@ -4,7 +4,7 @@ const config: Config = {
   preset: "ts-jest",
   testEnvironment: "node",
   roots: ["<rootDir>/src"],
-  testMatch: ["**/*.spec.ts"],
+  testMatch: ["**/*.spec.ts", "**/*.test.ts"],
   moduleFileExtensions: ["ts", "js", "json", "node"],
   clearMocks: true,
   coverageDirectory: "coverage",
