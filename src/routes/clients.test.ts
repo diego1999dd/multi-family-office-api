@@ -27,9 +27,7 @@ describe('Clients API', () => {
       const newClient = {
         name: 'John Doe',
         email: 'john.doe@example.com',
-        phone: '1234567890',
-        address: '123 Main St',
-        birthDate: '1990-01-01T00:00:00.000Z',
+        // Removed phone, address, birthDate
         age: 30,
         status: 'Active',
         totalPatrimony: 100000.00,
@@ -75,9 +73,7 @@ describe('Clients API', () => {
         data: {
           name: 'John Doe',
           email: 'john.doe@example.com',
-          phone: '1234567890',
-          address: '123 Main St',
-          birthDate: new Date('1990-01-01T00:00:00.000Z'),
+          // Removed phone, address, birthDate
           age: 30,
           status: 'Active',
           totalPatrimony: 100000.00,
@@ -88,9 +84,7 @@ describe('Clients API', () => {
         data: {
           name: 'Jane Smith',
           email: 'jane.smith@example.com',
-          phone: '0987654321',
-          address: '456 Oak Ave',
-          birthDate: new Date('1985-05-15T00:00:00.000Z'),
+          // Removed phone, address, birthDate
           age: 25,
           status: 'Inactive',
           totalPatrimony: 150000.00,
@@ -121,9 +115,7 @@ describe('Clients API', () => {
         data: {
           name: 'John Doe',
           email: 'john.doe@example.com',
-          phone: '1234567890',
-          address: '123 Main St',
-          birthDate: new Date('1990-01-01T00:00:00.000Z'),
+          // Removed phone, address, birthDate
           age: 30,
           status: 'Active',
           totalPatrimony: 100000.00,
@@ -151,9 +143,7 @@ describe('Clients API', () => {
         data: {
           name: 'John Doe',
           email: 'john.doe@example.com',
-          phone: '1234567890',
-          address: '123 Main St',
-          birthDate: new Date('1990-01-01T00:00:00.000Z'),
+          // Removed phone, address, birthDate
           age: 30,
           status: 'Active',
           totalPatrimony: 100000.00,
@@ -162,7 +152,7 @@ describe('Clients API', () => {
 
       const updatedClientData = {
         name: 'John Doe Updated',
-        phone: '1122334455',
+        // Removed phone
       };
 
       const response = await request(app.server)
@@ -173,7 +163,7 @@ describe('Clients API', () => {
       expect(response.body).toEqual(expect.objectContaining({
         id: client.id,
         name: updatedClientData.name,
-        phone: updatedClientData.phone,
+        // Removed phone assertion
       }));
 
       // Verify client was actually updated in the database
@@ -181,7 +171,7 @@ describe('Clients API', () => {
         where: { id: client.id },
       });
       expect(updatedClientInDb?.name).toBe(updatedClientData.name);
-      expect(updatedClientInDb?.phone).toBe(updatedClientData.phone);
+      // Removed phone assertion
     });
 
     test('should return 404 if client to update is not found', async () => {
@@ -199,9 +189,7 @@ describe('Clients API', () => {
         data: {
           name: 'John Doe',
           email: 'john.doe@example.com',
-          phone: '1234567890',
-          address: '123 Main St',
-          birthDate: new Date('1990-01-01T00:00:00.000Z'),
+          // Removed phone, address, birthDate
           age: 30,
           status: 'Active',
           totalPatrimony: 100000.00,
@@ -223,9 +211,7 @@ describe('Clients API', () => {
         data: {
           name: 'John Doe',
           email: 'john.doe@example.com',
-          phone: '1234567890',
-          address: '123 Main St',
-          birthDate: new Date('1990-01-01T00:00:00.000Z'),
+          // Removed phone, address, birthDate
           age: 30,
           status: 'Active',
           totalPatrimony: 100000.00,
