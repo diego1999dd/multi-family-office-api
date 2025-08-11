@@ -13,20 +13,20 @@ describe('Clients API', () => {
   });
 
   afterAll(async () => {
+    await prisma.simulationHistory.deleteMany({});
+    await prisma.evento.deleteMany({});
+    await prisma.client.deleteMany({});
     await app.close();
     await prisma.$disconnect(); // Disconnect PrismaClient
   });
 
-  beforeEach(async () => {
-    // Clean the database before each test
-    await prisma.client.deleteMany({});
-  });
+  
 
   describe('POST /clients', () => {
     test('should create a new client', async () => {
       const newClient = {
         name: 'John Doe',
-        email: 'john.doe@example.com',
+        email: `john.doe.${Date.now()}@example.com`,
         // Removed phone, address, birthDate
         age: 30,
         status: 'Active',
@@ -65,6 +65,8 @@ describe('Clients API', () => {
       expect(response.statusCode).toBe(400);
       expect(response.body).toHaveProperty('message');
     });
+
+    
   });
 
   describe('GET /clients', () => {
@@ -72,7 +74,7 @@ describe('Clients API', () => {
       const client1 = await prisma.client.create({
         data: {
           name: 'John Doe',
-          email: 'john.doe@example.com',
+          email: `john.doe.${Date.now()}@example.com`,
           // Removed phone, address, birthDate
           age: 30,
           status: 'Active',
@@ -83,7 +85,7 @@ describe('Clients API', () => {
       const client2 = await prisma.client.create({
         data: {
           name: 'Jane Smith',
-          email: 'jane.smith@example.com',
+          email: `jane.smith.${Date.now()}@example.com`,
           // Removed phone, address, birthDate
           age: 25,
           status: 'Inactive',
@@ -107,6 +109,8 @@ describe('Clients API', () => {
       expect(response.statusCode).toBe(200);
       expect(response.body).toEqual([]);
     });
+
+    
   });
 
   describe('GET /clients/:id', () => {
@@ -135,6 +139,8 @@ describe('Clients API', () => {
       expect(response.statusCode).toBe(404);
       expect(response.body).toHaveProperty('message', 'Client not found');
     });
+
+    
   });
 
   describe('PUT /clients/:id', () => {
@@ -203,6 +209,8 @@ describe('Clients API', () => {
       expect(response.statusCode).toBe(400);
       expect(response.body).toHaveProperty('message');
     });
+
+    
   });
 
   describe('DELETE /clients/:id', () => {
@@ -236,5 +244,7 @@ describe('Clients API', () => {
       expect(response.statusCode).toBe(404);
       expect(response.body).toHaveProperty('message', 'Client not found');
     });
+
+    
   });
 });

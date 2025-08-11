@@ -32,6 +32,7 @@ model Client {
   wallet Wallet?
   insuranceProfiles InsuranceProfile[]
   simulationHistories SimulationHistory[]
+  eventos Evento[]
 }
 
 model Goals {
@@ -50,13 +51,15 @@ model Wallet {
   client      Client @relation(fields: [clientId], references: [id])
 }
 
-model Eventos {
-  id        String   @id @default(uuid())
-  tipo      String
-  valor     Float
-  frequencia String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Evento {
+  id          String   @id @default(uuid())
+  tipo        String
+  valor       Float
+  frequencia  String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  clientId    String
+  client      Client   @relation(fields: [clientId], references: [id])
 }
 
 model InsuranceProfile {

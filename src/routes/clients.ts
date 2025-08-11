@@ -1,43 +1,94 @@
-import type { FastifyInstance } from "fastify";
-const { PrismaClient, Goals } = require("@prisma/client");
+import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+const { PrismaClient } = require("@prisma/client");
 const { z } = require("zod");
-const fastifyMultipart = require("@fastify/multipart");
-const csv = require("csv-parser");
-  const { generateSuggestions } = require("../suggestion-service.ts");
 
-// A função de plugin, que recebe a instância do Fastify e o objeto de opções (prisma)
-export default async function clientRoutes(
-  app: FastifyInstance,
-  options: { prisma: typeof PrismaClient }
-) {
-  const prisma = options.prisma;
+const prisma = new PrismaClient();
 
-  app.register(fastifyMultipart);
-
+export async function clientRoutes(server: FastifyInstance) {
   const clientSchema = z.object({
     name: z.string(),
     email: z.string().email(),
     age: z.number().int().positive(),
     status: z.string(),
+    phone: z.string().optional(),
+    address: z.string().optional(),
     totalPatrimony: z.number().nullable().default(null),
   });
 
-  const simulationHistorySchema = z.object({
-    clientId: z.string().uuid(),
-    simulationDate: z.string().datetime().optional(),
-    parameters: z.any(),
-    results: z.any(),
+  server.post("/clients", async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+      const clientData = clientSchema.parse(request.body);
+      const newClient = await prisma.client.create({
+        data: clientData,
+      });
+      return reply.status(201).send(newClient);
+    } catch (error: any) {
+      reply.status(400).send(error);
+    }
   });
 
-  // Rotas de clientes e outras funcionalidades relacionadas
-  app.post("/clients", async (request, reply) => {
-    // ... código da rota
+  server.get("/clients", async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+      const clients = await prisma.client.findMany();
+      return reply.send(clients);
+    } catch (error: any) {
+      reply.status(500).send(error);
+    }
   });
 
-  app.get("/clients", async (request, reply) => {
-    // ... código da rota
-  });
+  server.get(
+    "/clients/:id",
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      try {
+        const { id } = request.params as { id: string };
+        const client = await prisma.client.findUnique({
+          where: { id },
+        });
+        if (!client) {
+          return reply.status(404).send({ message: "Client not found" });
+        }
+        return reply.send(client);
+      } catch (error: any) {
+        reply.status(500).send(error);
+      }
+    }
+  );
 
-  // Outras rotas como /simulation-history, /suggestions, /import-clients-sse
-  // ...
+  server.put(
+    "/clients/:id",
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      try {
+        const { id } = request.params as { id: string };
+        const clientData = clientSchema.partial().parse(request.body); // Allow partial updates
+        const updatedClient = await prisma.client.update({
+          where: { id },
+          data: clientData,
+        });
+        return reply.send(updatedClient);
+      } catch (error: any) {
+        if (error.code === 'P2025') { // Prisma "not found" error
+          return reply.status(404).send({ message: "Client not found" });
+        }
+        reply.status(400).send(error);
+      }
+    }
+  );
+
+  server.delete(
+    "/clients/:id",
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      try {
+        const { id } = request.params as { id: string };
+        await prisma.client.delete({
+          where: { id },
+        });
+        return reply.status(204).send();
+      } catch (error: any) {
+        if (error.code === 'P2025') { // Prisma "not found" error
+          return reply.status(404).send({ message: "Client not found" });
+        }
+        reply.status(500).send(error);
+      }
+    }
+  );
 }
